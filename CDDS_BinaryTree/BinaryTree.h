@@ -125,12 +125,84 @@ inline bool BinaryTree<T>::isEmpty() const
 template<typename T>
 inline void BinaryTree<T>::insert(T value)
 {
+	//If the tree is empty
 	if (isEmpty())
 	{
-		m_root = new TreeNode<T> * (value);
+		//Set the root to be this new node
+		m_root = new TreeNode<T>*(value);
 	}
 	else
 	{
+		//Create two treeNode pointers pointing to the currentNode and the new node that is being added
+		TreeNode<T>* currNode = m_root;
+		TreeNode<T>* NewNode = new TreeNode<T>*(value);
+
+		//While the currNode is not nullptr
+		while(currNode != nullptr)
+		{
+			//If the value is less than the current node...
+			if (value < currNode)
+			{
+				//If the current node has a left...
+				if (currNode.hasLeft())
+				{
+					//If the value is greater than the current node's left value
+					if (value > currNode->getLeft()->getData())
+					{
+						//Set the newNode's left to be equal to the current Node's left
+						NewNode->getLeft() = currNode->getLeft();
+
+						//Then set the current Node's left to be the NewNode.
+						currNode->getLeft() = NewNode;
+						return;
+					}
+					else
+					{
+						//set the current Node to be the current node's left.
+						currNode = currNode->getLeft();
+					}
+				}
+				// Else...
+				else
+				{
+					//Set the currentNode's left to be the newNode.
+					currNode->getLeft() = NewNode;
+					return;
+				}
+			}
+			//If the value is greater than the current node...
+			else if (value > currNode)
+			{
+				//If the current node has a right...
+				if (currNode->hasRight())
+				{
+					//If the value is less than the current node's right value
+					if (value < currNode->getRight()->getData)
+					{
+						//Set the new node's right to equal the current nodes right
+						NewNode->getRight() = currNode->getRight();
+
+						//Set the current nodes right to be the new node
+						currNode->getRight() = NewNode;
+						return;
+					}
+					//else...
+					else
+					{
+						// set the current node to equal the current nodes right
+						currNode = currNode->getRight();
+					}
+				}
+				// Else...
+				else
+				{
+					//Set the currentNode's right to be the newNode.
+					currNode->getRight() = NewNode;
+					return;
+				}
+			}
+		}
+		
 	}
 }
 
@@ -149,6 +221,25 @@ inline TreeNode<T>* BinaryTree<T>::find(T value)
 	if (!isEmpty)
 	{
 		TreeNode<T>* currentNode = m_root;
+
+		while (currentNode != nullptr)
+		{
+			if (currentNode->getData() == value)
+			{
+				return currentNode;
+			}
+
+			if (value < currentNode->getData())
+			{
+				currentNode = currentNode->getLeft();
+			}
+			else if (value > currentNode->getData())
+			{
+				currentNode = currentNode->getRight();
+			}
+		}
+
+		return nullptr;
 	}
 	else
 	{
